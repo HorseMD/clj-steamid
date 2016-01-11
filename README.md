@@ -6,7 +6,11 @@ Conversion tool to switch between the 3 different forms of SteamID:
 * steamid64
 * steamid3
 
+Should work in both Clojure and ClojureScript projects.
+
 ## Installation
+
+In your `project.clj` or equivalent:
 
 ```clojure
 ...
