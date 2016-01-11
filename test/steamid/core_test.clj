@@ -45,4 +45,16 @@
     (is (= test-steamid (any-steamid? test-steamid)))
 
     (is (= nil (any-steamid? "bacon")))
-    (is (= nil (any-steamid? "username")))))
+    (is (= nil (any-steamid? "username"))))
+
+  (testing "any-steamid? :callback option"
+    (is (= (str "SteamID: " test-steamid64)
+           (any-steamid? test-steamid64 :callback #(str "SteamID: " %)))))
+
+  (testing "any-steamid? :without option"
+    (is (= nil (any-steamid? test-steamid3 :without steamid3?))))
+
+  (testing "any-steamid? :default option"
+    (is (= "waka waka" (any-steamid? "cool username" :default "waka waka")))
+    (let [int (rand-int 10)]
+      (is (= int (any-steamid? "cooler username" :default int))))))

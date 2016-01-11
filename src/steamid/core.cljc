@@ -12,14 +12,19 @@
 
 (defn any-steamid?
   "Determine if the given String is a SteamID of any sort. Takes optional
-:target param. To add: :default and :not"
-  [id & {:keys [target]}]
-  (letfn [(callback [fn id] (if (nil? fn) id (fn id)))]
-    (callback target ((some-fn
-                       #(steamid? %)
-                       #(steamid3? %)
-                       #(steamid64? %))
-                      id))))
+:callback :without and :default parameters. Specifying :target "
+  [id & {:keys [callback without default]}]
+  (let [steamid-fns [steamid? steamid64? steamid3?]
+        callback (fn [p] (if (nil? callback)
+                     p
+                     (callback p)))]
+    (or (->> steamid-fns
+                     (filter #(not= % without))
+                     (map #(% id))
+                     (filter (complement nil?))
+                     (first)
+                     (callback))
+        default)))
 
 (defn steamid3->steamid
   "Convert a SteamID3 to SteamID."
