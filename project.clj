@@ -1,4 +1,4 @@
-(defproject steamid "0.1.0"
+(defproject steamid "0.1.1"
   :url "https://github.com/horsemd/clj-steamid"
   :description "SteamID Converter"
   :license {:name "Eclipse Public License"
