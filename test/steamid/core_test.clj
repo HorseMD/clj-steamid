@@ -37,3 +37,12 @@
   (testing "steamid fn works"
     (is (= test-steamid (steamid test-steamid3)))
     (is (= test-steamid (steamid test-steamid64)))))
+
+(deftest is-any-steamid
+  (testing "any-steamid? fn"
+    (is (= test-steamid3 (any-steamid? test-steamid3)))
+    (is (= test-steamid64 (any-steamid? test-steamid64)))
+    (is (= test-steamid (any-steamid? test-steamid)))
+
+    (is (= nil (any-steamid? "bacon")))
+    (is (= nil (any-steamid? "username")))))
