@@ -12,16 +12,18 @@
 
 (defn any-steamid?
   "Determine if the given String is a SteamID of any sort. Takes optional
-:callback :without and :default parameters. Specifying :target "
+:callback :without and :default parameters. Specifying :callback will fun the given
+function on the result (even if its nil). :without will skip checking a given steamid function.
+:default specifies what to return if the result of this function would have been nil."
   [id & {:keys [callback without default]}]
   (let [steamid-fns [steamid? steamid64? steamid3?]
         callback (fn [p] (if (nil? callback)
                      p
                      (callback p)))]
     (or (->> steamid-fns
-                     (filter #(not= % without))
+                     (filter #(not= % without)) ; remove fn if it = withoutfn
                      (map #(% id))
-                     (filter (complement nil?))
+                     (filter (complement nil?)) ; remove nil vals
                      (first)
                      (callback))
         default)))
@@ -37,40 +39,46 @@
 (defn steamid
   "Convert any type of SteamID to... SteamID."
   [sid]
-  (when (any-steamid? sid)
-    (let [sid (str sid)]
-      (if (steamid3? sid)
-        (steamid3->steamid sid)
-        (let [id (parse-long sid)
-              v util/base-num
-              y (mod id 2)
-              w (- id y v)]
-          (str "STEAM_0:" y ":" (/ w 2)))))))
+  (if (steamid? sid)
+    sid
+    (when (any-steamid? sid)
+      (let [sid (str sid)]
+        (if (steamid3? sid)
+          (steamid3->steamid sid)
+          (let [id (parse-long sid)
+                v util/base-num
+                y (mod id 2)
+                w (- id y v)]
+            (str "STEAM_0:" y ":" (/ w 2))))))))
 
 (defn steamid3
   "Convert any type of SteamID to SteamID3."
   [sid3]
-  (when (any-steamid? sid3)
-    (let [id (if (steamid64? (str sid3))
-               (steamid (str sid3))
-               sid3)
-          split (str/split id #":")]
-      (str "[U:1:" (+
-                    (parse-int (nth split 1))
-                    (* 2
-                       (parse-int (nth split 2))))
-           "]"))))
+  (if (steamid3? sid3)
+    sid3
+    (when (any-steamid? sid3)
+      (let [id (if (steamid64? (str sid3))
+                 (steamid (str sid3))
+                 sid3)
+            split (str/split id #":")]
+        (str "[U:1:" (+
+                      (parse-int (nth split 1))
+                      (* 2
+                         (parse-int (nth split 2))))
+             "]")))))
 
 (defn steamid64
   "Convert any type of SteamID to SteamID64.
   Value returned is a string representing a SteamID64."
   [sid]
-  (when (any-steamid? sid)
-    (let [id (if (steamid3? sid)
-               (steamid3->steamid sid)
-               sid)
-          split (str/split id #":")
-          v util/base-num
-          z (parse-int (nth split 2))
-          y (parse-int (nth split 1))]
-      (str (+ v (* 2 z) y)))))
+  (if (steamid64? sid)
+    sid
+    (when (any-steamid? sid)
+      (let [id (if (steamid3? sid)
+                 (steamid3->steamid sid)
+                 sid)
+            split (str/split id #":")
+            v util/base-num
+            z (parse-int (nth split 2))
+            y (parse-int (nth split 1))]
+        (str (+ v (* 2 z) y))))))

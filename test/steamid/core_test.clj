@@ -58,3 +58,10 @@
     (is (= "waka waka" (any-steamid? "cool username" :default "waka waka")))
     (let [int (rand-int 10)]
       (is (= int (any-steamid? "cooler username" :default int))))))
+
+(deftest converters-allow-target
+  (testing "Converters allow you to pass SteamIDs already in that format without
+freaking out."
+    (is (= test-steamid (steamid test-steamid)))
+    (is (= test-steamid64 (steamid64 test-steamid64)))
+    (is (= test-steamid3 (steamid3 test-steamid3)))))

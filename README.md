@@ -39,11 +39,6 @@ that type.
 
 All SteamIDs returned are Strings.
 
-## TODO
-
-* Check the parameter to the converters is actually a steamid of some sort
-* Don't freak out if you're given a steamid in the format you want to convert TO.
-
 ## License
 
 Copyright © 2016 Horse M.D.
