@@ -31,10 +31,10 @@ that type.
 ; => "[U:1:100558323]"
 
 (steamid64 "STEAM_0:1:50279161")
-; => "STEAM_0:1:50279161"
+; => "76561198060824051"
 
 (steamid "[U:1:100558323]")
-; => "76561198060824051"
+; => "STEAM_0:1:50279161"
 ```
 
 You can check if a string is a specific SteamID:
