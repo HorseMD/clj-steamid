@@ -15,7 +15,7 @@ In your `project.clj` or equivalent:
 ```clojure
 ...
         :dependencies [...
-                      [steamid "0.1.0"]]
+                      [steamid "0.1.1"]]
                       ...
 ```
 
@@ -37,6 +37,19 @@ that type.
 ; => "76561198060824051"
 ```
 
+You can check if a string is a specific SteamID:
+
+```clojure
+(steamid? "76561198060824051")
+; => nil
+
+(steamid64? "76561198060824051")
+; => "76561198060824051"
+
+(steamid3? "[U:1:100558323]")
+; => "[U:1:100558323]"
+```
+
 You can also check if a string is a SteamID at all.
 
 ```clojure
@@ -44,7 +57,7 @@ You can also check if a string is a SteamID at all.
 ; => nil
 
 (any-steamid? "STEAM_0:1:50279161")
-=> "STEAM_0:1:50279161"
+; => "STEAM_0:1:50279161"
 ```
 
 All SteamIDs returned are Strings.
