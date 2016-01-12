@@ -37,6 +37,16 @@ that type.
 ; => "76561198060824051"
 ```
 
+You can also check if a string is a SteamID at all.
+
+```clojure
+(any-steamid? "bacon")
+; => nil
+
+(any-steamid? "STEAM_0:1:50279161")
+=> "STEAM_0:1:50279161"
+```
+
 All SteamIDs returned are Strings.
 
 ## License
